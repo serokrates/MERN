@@ -47,7 +47,7 @@ function Register() {
         name,
         email,
         password,
-        status,
+        status: "active",
       };
       console.log(userData);
       dispatch(register(userData));
@@ -112,16 +112,7 @@ function Register() {
                   onChange={onChange}
                 />
               </div>
-              <div class="mb-3">
-                <input
-                  type="status"
-                  class="form-control"
-                  id="status"
-                  placeholder="status"
-                  value={status}
-                  onChange={onChange}
-                />
-              </div>
+
               <div class="text-center">
                 <button type="submit" class="btn btn-color px-5 mb-5 w-100">
                   Register
