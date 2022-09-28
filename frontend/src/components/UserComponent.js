@@ -1,14 +1,35 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import block from "../images/block.svg";
 import unblock from "../images/unblock.svg";
 import { deleteUser, changeStatus } from "../features/users/usersSlice";
 import { useState, useEffect } from "react";
+import { logout, reset } from "../features/auth/authSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 function UserComponent({ user, index }) {
+  const navigate = useNavigate();
   const [stateCustomer, setCustomerState] = useState([]);
   const dispatch = useDispatch();
+  const userCurrent = useSelector((state) => state.auth).user;
 
+  const deleteAndLogout = (id) => {
+    dispatch(deleteUser(id));
+    if (userCurrent._id === id) {
+      dispatch(logout());
+      dispatch(reset());
+      navigate("/");
+    }
+  };
+  const blockAndLogout = (id) => {
+    dispatch(changeStatus([id, "blocked"]));
+    if (userCurrent._id === id) {
+      // console.log("ten sam user");
+      dispatch(logout());
+      dispatch(reset());
+      navigate("/");
+    }
+  };
   return (
     <tbody>
       <tr>
@@ -25,7 +46,7 @@ function UserComponent({ user, index }) {
           <button
             type="button"
             class="btn btn-danger"
-            onClick={() => dispatch(deleteUser(user._id))}
+            onClick={() => deleteAndLogout(user._id)}
           >
             Delete
           </button>
@@ -43,7 +64,7 @@ function UserComponent({ user, index }) {
             src={block}
             style={{ width: "40px", minWidth: "40px" }}
             class="img-thumbnail"
-            onClick={() => dispatch(changeStatus([user._id, "blocked"]))}
+            onClick={() => blockAndLogout(user._id)}
           />
         </td>
       </tr>

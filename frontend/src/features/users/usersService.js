@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import authService from "../auth/authService";
 const API_URL = "/api/users/";
 
 const getUsers = async (token) => {
@@ -14,7 +14,8 @@ const deleteUser = async (userID, token) => {
     },
   };
   const response = await axios.delete(API_URL + "me/" + userID, config);
-
+  // if()
+  // await authService.logout();
   return response.data;
 };
 

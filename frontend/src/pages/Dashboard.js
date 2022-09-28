@@ -13,7 +13,7 @@ function Dashboard() {
   const { users, isLoading, isError, message } = useSelector(
     (state) => state.users
   );
-
+  // console.log(user.name);
   useEffect(() => {
     if (isError) {
       console.log(message);
