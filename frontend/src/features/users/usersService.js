@@ -4,7 +4,7 @@ const API_URL = "/api/users/";
 
 const getUsers = async (token) => {
   const response = await axios.get(API_URL);
-
+  console.log("getUsers: ", response);
   return response.data;
 };
 
@@ -32,7 +32,7 @@ const changeStatus = async (dataPut, token) => {
     status: statuss,
   };
   const response = await axios.put(API_URL + "me/" + userID, data, config);
-
+  console.log("change Status: ", response);
   return response.data;
 };
 

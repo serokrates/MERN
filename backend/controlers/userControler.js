@@ -117,6 +117,7 @@ const blockUser = asyncHandler(async (req, res) => {
     new: true,
   });
   console.log(updatedUser);
+
   res.status(200).json(updatedUser);
   // res.status(200).json({message: `updated ${req.params.id}`})
 });
