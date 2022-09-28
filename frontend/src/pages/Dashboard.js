@@ -26,7 +26,6 @@ function Dashboard() {
       dispatch(reset());
     };
   }, [user, navigate, isError, message, dispatch]);
-  console.log(users);
   return (
     <>
       <div>

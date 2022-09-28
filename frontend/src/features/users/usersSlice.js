@@ -23,7 +23,7 @@ export const getUsers = createAsyncThunk(
           error.response.data.message) ||
         error.message ||
         error.toString();
-      // it will send the error message as the payload
+
       return thunkAPI.rejectWithValue(error);
     }
   }
@@ -49,11 +49,9 @@ export const deleteUser = createAsyncThunk(
 export const changeStatus = createAsyncThunk(
   "users/change",
   async (dataPut, thunkAPI) => {
-    const { id, statuss } = dataPut;
-    console.log(" ", dataPut);
     try {
       const token = thunkAPI.getState().auth.user.token;
-      console.log(token);
+
       let response = await usersService.changeStatus(dataPut, token);
       return await usersService.getUsers();
     } catch (error) {
@@ -96,7 +94,6 @@ export const usersSlice = createSlice({
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        // wywalamy tego użytkownika z users którego id wysłaliśmy w delete
         state.users = state.users.filter(
           (goal) => goal._id !== action.payload.id
         );
@@ -113,19 +110,11 @@ export const usersSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.users = action.payload;
-        // state.users = state.users.findByIdAndUpdate(
-        //   (goal) => goal._id !== action.payload.id
-        // );
       })
-
-      //   User.findByIdAndUpdate(action.payload.id, req.body, {
-      //     new: true,
-      //   });
 
       .addCase(changeStatus.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        // state.message = action.payload;
       });
   },
 });

@@ -102,7 +102,6 @@ const getAllRegisteredUsers = asyncHandler(async (req, res) => {
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndDelete(req.params.id);
   res.status(200).json({ id: req.params.id });
-  // res.status(200).json({message: `deleted ${req.params.id}`})
 });
 const blockUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
@@ -110,16 +109,12 @@ const blockUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("goal notfound");
   }
-  // tworzymy zupdejtowany goal
-  // https://mongoosejs.com/docs/api/model.html#model_Model-findByIdAndUpdate
-  // [options.new=false] «Boolean» if true, return the modified document rather than the original
   const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
   console.log(updatedUser);
 
   res.status(200).json(updatedUser);
-  // res.status(200).json({message: `updated ${req.params.id}`})
 });
 
 module.exports = {
