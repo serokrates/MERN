@@ -9,11 +9,18 @@ const {
   deleteUser,
 } = require("../controlers/userControler");
 
-const { protect, ifBlocked } = require("../middleware/authMiddleware");
+const {
+  protect,
+  ifBlocked,
+  ifBlocked2,
+} = require("../middleware/authMiddleware");
 
-router.route("/").get(getAllRegisteredUsers).post(registerUser);
+router.route("/").get(ifBlocked2, getAllRegisteredUsers).post(registerUser);
 router.post("/login", loginUser);
 router.route("/me").get(protect, ifBlocked, getMe);
-router.route("/me/:id").put(protect, blockUser).delete(protect, deleteUser);
+router
+  .route("/me/:id")
+  .put(protect, ifBlocked2, blockUser)
+  .delete(protect, ifBlocked2, deleteUser);
 
 module.exports = router;

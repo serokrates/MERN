@@ -13,18 +13,17 @@ const initialState = {
 
 export const getUsers = createAsyncThunk(
   "users/getAll",
-  async (_, thunkAPI) => {
+  async (userID, thunkAPI) => {
     try {
-      return await usersService.getUsers();
+      return await usersService.getUsers(userID);
     } catch (error) {
       const message =
-        (error.reasponse &&
+        (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
         error.toString();
-
-      return thunkAPI.rejectWithValue(error);
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
@@ -49,11 +48,12 @@ export const deleteUser = createAsyncThunk(
 export const changeStatus = createAsyncThunk(
   "users/change",
   async (dataPut, thunkAPI) => {
+    console.log("dataPut[2]", dataPut);
     try {
       const token = thunkAPI.getState().auth.user.token;
 
       let response = await usersService.changeStatus(dataPut, token);
-      return await usersService.getUsers();
+      return await usersService.getUsers(dataPut[2]);
     } catch (error) {
       console.log(error);
       const message =

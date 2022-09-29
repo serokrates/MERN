@@ -4,28 +4,44 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getUsers, reset } from "../features/users/usersSlice";
 import UserComponent from "../components/UserComponent";
+import { logout, resetUser } from "../features/auth/authSlice";
 
 function Dashboard() {
+  function refreshPage() {
+    window.location.reload(false);
+  }
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const onLogout = () => {
+    dispatch(logout());
+    dispatch(resetUser());
+    navigate("/login");
+  };
   const { user } = useSelector((state) => state.auth);
   const { users, isLoading, isError, message } = useSelector(
     (state) => state.users
   );
-  // console.log(user.name);
+
+  console.log(users, isLoading, isError, message);
+  console.log(user);
   useEffect(() => {
+    console.log(users, isLoading, isError, message);
+    console.log("length: ", users.length);
     if (isError) {
       console.log(message);
+      onLogout();
+      navigate("/login");
     }
     if (!user) {
       navigate("/login");
     }
-    dispatch(getUsers());
+    if (user) {
+      dispatch(getUsers(user._id));
+    }
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, isError, message, dispatch]);
+  }, [user, navigate, isError, dispatch]);
   return (
     <>
       <div>
@@ -48,9 +64,13 @@ function Dashboard() {
                 <th scope="col">block</th>
               </tr>
             </thead>
-            {users.map(({ user }, key) => (
-              <UserComponent key={key} user={users[key]} index={key} />
-            ))}
+            {users.length !== 0 ? (
+              users.map(({ user }, key) => (
+                <UserComponent key={key} user={users[key]} index={key} />
+              ))
+            ) : (
+              <></>
+            )}
           </table>
         </div>
       </div>

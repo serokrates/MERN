@@ -54,8 +54,70 @@ const ifBlocked = asyncHandler(async (req, res, next) => {
     }
   }
 });
+const ifBlocked2 = asyncHandler(async (req, res, next) => {
+  // console.log(req.query.id);
+  // const userrr = await User.findById(req.query.id);
+  // console.log(userrr.status);
 
+  // if (userrr.status === "active") {
+  //   // console.log("authorized");
+  //   // next();
+
+  //   try {
+  //     console.log("authorized");
+  //     next();
+  //   } catch (error) {
+  //     // }else {
+  //     //   // console.log(error);
+  //     //   // res.status(401).send({ error: "Something failed!" });
+
+  //     res.status(400);
+  //     throw new Error("invalid credentials");
+  //   }
+  // }
+  // console.log(req.body.currentUserID);
+  // console.log(req.query.id);
+  console.log("req.query.id: ", req.query.id);
+  const userrr = await User.findById(req.query.id);
+  const cu = await User.findById(req.body.currentUserID);
+  // console.log(userrr.status);
+  console.log("cu: ", cu);
+  if (userrr) {
+    console.log("userrr: ", userrr);
+    if (userrr.status === "active") {
+      // console.log("authorized");
+      // next();
+
+      console.log("authorized");
+      const users = await User.find({});
+      res.status(200).json(users);
+    } else {
+      // }else {
+      //   // console.log(error);
+      //   // res.status(401).send({ error: "Something failed!" });
+      res.status(401).send({ error: "Something failed!" });
+      return new Error("invalid credentials");
+    }
+  }
+  if (cu) {
+    console.log("cu");
+    if (cu.status === "active") {
+      // console.log("authorized");
+      // next();
+
+      console.log("authorized");
+      next();
+    } else {
+      // }else {
+      //   // console.log(error);
+      //   // res.status(401).send({ error: "Something failed!" });
+      res.status(401).send({ error: "Something failed!" });
+      return new Error("invalid credentials");
+    }
+  }
+});
 module.exports = {
   protect,
   ifBlocked,
+  ifBlocked2,
 };

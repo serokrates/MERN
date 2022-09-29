@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { register, reset } from "../features/auth/authSlice";
+import { register, resetUser } from "../features/auth/authSlice";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ function Register() {
     if (isSuccess || user) {
       navigate("/");
     }
-    dispatch(reset());
+    dispatch(resetUser());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {

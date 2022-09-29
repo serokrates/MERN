@@ -4,9 +4,9 @@ import block from "../images/block.svg";
 import unblock from "../images/unblock.svg";
 import { deleteUser, changeStatus } from "../features/users/usersSlice";
 import { useState, useEffect } from "react";
-import { logout, reset } from "../features/auth/authSlice";
+import { logout, resetUser } from "../features/auth/authSlice";
 import { Link, useNavigate } from "react-router-dom";
-
+import { getUsers, reset } from "../features/users/usersSlice";
 function UserComponent({ user, index }) {
   const navigate = useNavigate();
   const [stateCustomer, setCustomerState] = useState([]);
@@ -14,21 +14,32 @@ function UserComponent({ user, index }) {
   const userCurrent = useSelector((state) => state.auth).user;
 
   const deleteAndLogout = (id) => {
-    dispatch(deleteUser(id));
+    dispatch(deleteUser([id, userCurrent._id]));
     if (userCurrent._id === id) {
       dispatch(logout());
-      dispatch(reset());
-      navigate("/");
+      dispatch(resetUser());
+      navigate("/login");
     }
   };
   const blockAndLogout = (id) => {
-    dispatch(changeStatus([id, "blocked"]));
+    dispatch(changeStatus([id, "blocked", userCurrent._id]));
+
     if (userCurrent._id === id) {
       // console.log("ten sam user");
       dispatch(logout());
-      dispatch(reset());
-      navigate("/");
+      dispatch(resetUser());
+      navigate("/login");
     }
+  };
+  const activateUser = (id) => {
+    dispatch(changeStatus([id, "active", userCurrent._id]));
+
+    // if (userCurrent._id === id) {
+    //   // console.log("ten sam user");
+    //   dispatch(logout());
+    //   dispatch(resetUser());
+    //   navigate("/login");
+    // }
   };
   return (
     <tbody>
@@ -56,7 +67,7 @@ function UserComponent({ user, index }) {
             src={unblock}
             style={{ width: "40px", minWidth: "40px" }}
             class="img-thumbnail"
-            onClick={() => dispatch(changeStatus([user._id, "active"]))}
+            onClick={() => activateUser(user._id)}
           />
         </td>
         <td>

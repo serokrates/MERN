@@ -96,12 +96,29 @@ const generateToken = (id) => {
 };
 
 const getAllRegisteredUsers = asyncHandler(async (req, res) => {
+  // console.log(req.query.id);
+  // const userrr = await User.findById(req.query.id);
+  // console.log(userrr.status);
+  // if (userrr.status === "active") {
+  //   // console.log("authorized");
+  //   // next();
+
+  //   console.log("authorized");
   const users = await User.find({});
   res.status(200).json(users);
+  // } else {
+  //   // }else {
+  //   //   // console.log(error);
+  //   //   // res.status(401).send({ error: "Something failed!" });
+  //   res.status(401).send({ error: "Something failed!" });
+  //   return new Error("invalid credentials");
+  // }
 });
 const deleteUser = asyncHandler(async (req, res) => {
-  const user = await User.findByIdAndDelete(req.params.id);
-  res.status(200).json({ id: req.params.id });
+  console.log("controller: ", req.body.userID);
+  const userrrr = await User.findByIdAndDelete(req.body.userID);
+  // const user = await User.findByIdAndDelete(req.params.id);
+  res.status(200).json({ id: req.body.userID });
 });
 const blockUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);

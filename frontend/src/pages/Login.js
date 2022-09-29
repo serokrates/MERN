@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { login, reset } from "../features/auth/authSlice";
+import { login, resetUser } from "../features/auth/authSlice";
 
 function Login() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function Login() {
   });
 
   const { name, email, password } = formData;
-
+  console.log(user, isLoading, isError, isSuccess, message);
   useEffect(() => {
     if (isError) {
       console.log(message);
@@ -29,7 +29,7 @@ function Login() {
     if (isSuccess || user) {
       navigate("/");
     }
-    dispatch(reset());
+    dispatch(resetUser());
   }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   const onChange = (e) => {
